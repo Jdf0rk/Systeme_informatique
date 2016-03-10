@@ -10,7 +10,7 @@
 "printf"		{return PRINT;}
 "if"			{return IF;}
 "while"			{return WHILE;}
-[A-Za-z][A-Za-z0-9]* 	{yylval.str=strdup(yytext); printf("%s\n",yylval.str); return ID ;} 
+[A-Za-z][A-Za-z0-9]* 	{yylval.str=strdup(yytext); return ID ;} 
 [0-9]+\.[0-9]+ 		{yylval.dec = atof(yytext); return DECIMAL;}
 [0-9]+ 			{yylval.val = atoi(yytext); return ENTIER;}
 "+" 			{return PLUS;}

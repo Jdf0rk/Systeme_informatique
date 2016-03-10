@@ -8,13 +8,19 @@
 
 %union {int val; char* str; float dec;}
 %type <val> Affectation
+%type <val> Expression
 
+%left PLUS MOINS
+%left MULT DIV
+%left NEG
+
+%token EGAL
 %token INT CONST
 %token PRINT
 %token <str>ID
 %token <dec>DECIMAL 
 %token <val>ENTIER
-%token PLUS MOINS MULT DIV EGAL EXP
+%token EXP
 %token VIR PVIR
 %token AO AF PO PF
 %token INF SUP 
@@ -57,10 +63,25 @@ Condition: 		Expression Comparateur Expression;
 Conditions: 		Condition OR Conditions
 			|Condition AND Conditions
 			|Condition;
-			
-Expression:		ID
-			|DECIMAL
-			|ENTIER;
+
+Expression:		ID 					{ int addr = getVarAddr($1);
+								int addrI = getRegistre(); 
+								if (addr==-1){printf("La variable n'est pas déclarée\n");}
+								else {printf("COP @%d %d\n", addrI, addr);$$=addrI;}}
+ 			
+			|ENTIER 				{ int addrI=getRegistre(); printf("AFC @%d %d\n", addrI, $1); $$ = addrI; }
+			| Expression PLUS Expression 		{ libererRegistre();
+								libererRegistre(); 
+								int addrI=getRegistre(); 
+								printf("ADD @%d @%d @%d\n", addrI, $1, $3); }
+			| Expression MOINS Expression {}
+			| Expression MULT Expression {}
+			| Expression DIV Expression {}
+			| MOINS Expression %prec NEG  {}
+			| Expression EXP Expression {}
+			| PO Expression PF  {}
+			;			
+
 			
 Comparateur:		INF				//eventuellement ne pas le factoriser
 			|SUP
@@ -85,6 +106,8 @@ Declaration :		INT ID PVIR				{add($2,"int", 0, 0);}
 
 
 AFonction :		ID PO Parametres PF PVIR;
+
+
 
 %%
 int yyerror(char *s) {

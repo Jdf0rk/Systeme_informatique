@@ -40,6 +40,7 @@ int getRegistre (){
 	struct variable varTab = {"registre","registre",0,0};
 	table[TAILLEVAR + compteurReg]=varTab;
 	compteurReg=(compteurReg+1);
+	return compteurReg-1;
 	
 }
 

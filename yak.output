@@ -2,11 +2,15 @@ Terminaux inutilisés dans la grammaire
 
    CONST
    PRINT
-   PLUS
-   MOINS
-   MULT
-   DIV
-   EXP
+   DECIMAL
+
+
+État 55 conflits: 5 décalage/réduction
+État 75 conflits: 1 décalage/réduction
+État 76 conflits: 1 décalage/réduction
+État 77 conflits: 1 décalage/réduction
+État 78 conflits: 1 décalage/réduction
+État 80 conflits: 5 décalage/réduction
 
 
 Grammaire
@@ -48,97 +52,105 @@ Grammaire
    23           | Condition
 
    24 Expression: ID
-   25           | DECIMAL
-   26           | ENTIER
+   25           | ENTIER
+   26           | Expression PLUS Expression
+   27           | Expression MOINS Expression
+   28           | Expression MULT Expression
+   29           | Expression DIV Expression
+   30           | MOINS Expression
+   31           | Expression EXP Expression
+   32           | PO Expression PF
 
-   27 Comparateur: INF
-   28            | SUP
-   29            | EGAL EGAL
-   30            | INF EGAL
-   31            | SUP EGAL
+   33 Comparateur: INF
+   34            | SUP
+   35            | EGAL EGAL
+   36            | INF EGAL
+   37            | SUP EGAL
 
-   32 Bloc_IF: IF PO Conditions PF Body
+   38 Bloc_IF: IF PO Conditions PF Body
 
-   33 Bloc_WHILE: WHILE PO Conditions PF Body
+   39 Bloc_WHILE: WHILE PO Conditions PF Body
 
-   34 Affectation: EGAL ENTIER PVIR
+   40 Affectation: EGAL ENTIER PVIR
 
-   35 Declaration: INT ID PVIR
-   36            | INT ID Affectation
+   41 Declaration: INT ID PVIR
+   42            | INT ID Affectation
 
-   37 AFonction: ID PO Parametres PF PVIR
+   43 AFonction: ID PO Parametres PF PVIR
 
 
 Terminaux, suivis des règles où ils apparaissent
 
 $end (0) 0
 error (256)
-INT (258) 4 5 7 8 35 36
-CONST (259)
-PRINT (260)
-ID (261) 4 5 7 10 24 35 36 37
-DECIMAL (262) 25
-ENTIER (263) 26 34
-PLUS (264)
-MOINS (265)
-MULT (266)
-DIV (267)
-EGAL (268) 29 30 31 34
-EXP (269)
+PLUS (258) 26
+MOINS (259) 27 30
+MULT (260) 28
+DIV (261) 29
+EGAL (262) 35 36 37 40
+INT (263) 4 5 7 8 41 42
+CONST (264)
+PRINT (265)
+ID (266) 4 5 7 10 24 41 42 43
+DECIMAL (267)
+ENTIER (268) 25 40
+EXP (269) 31
 VIR (270) 7 8
-PVIR (271) 12 34 35 37
+PVIR (271) 12 40 41 43
 AO (272) 9
 AF (273) 9
-PO (274) 4 32 33 37
-PF (275) 4 32 33 37
-INF (276) 27 30
-SUP (277) 28 31
-IF (278) 32
-WHILE (279) 33
+PO (274) 4 32 38 39 43
+PF (275) 4 32 38 39 43
+INF (276) 33 36
+SUP (277) 34 37
+IF (278) 38
+WHILE (279) 39
 AND (280) 22
 OR (281) 21
+NEG (282)
 
 
 Non-terminaux, suivis des règles où ils apparaissent
 
-$accept (27)
+$accept (28)
     à gauche: 0
-Input (28)
+Input (29)
     à gauche: 1 2, à droite: 0 1
-DFonction (29)
+DFonction (30)
     à gauche: 4, à droite: 1 2
-$@1 (30)
+$@1 (31)
     à gauche: 3, à droite: 4
-Parametres (31)
-    à gauche: 5 6, à droite: 4 37
-SuiteParametres (32)
+Parametres (32)
+    à gauche: 5 6, à droite: 4 43
+SuiteParametres (33)
     à gauche: 7 8, à droite: 5 7
-Body (33)
-    à gauche: 9, à droite: 4 32 33
-Instruction (34)
+Body (34)
+    à gauche: 9, à droite: 4 38 39
+Instruction (35)
     à gauche: 10 11 12, à droite: 15 16
-Instructions (35)
+Instructions (36)
     à gauche: 13 14 15 16, à droite: 9 13 16
-Bloc (36)
+Bloc (37)
     à gauche: 17 18 19, à droite: 13 14
-Condition (37)
+Condition (38)
     à gauche: 20, à droite: 21 22 23
-Conditions (38)
-    à gauche: 21 22 23, à droite: 21 22 32 33
-Expression (39)
-    à gauche: 24 25 26, à droite: 20
-Comparateur (40)
-    à gauche: 27 28 29 30 31, à droite: 20
-Bloc_IF (41)
-    à gauche: 32, à droite: 17
-Bloc_WHILE (42)
-    à gauche: 33, à droite: 18
-Affectation (43)
-    à gauche: 34, à droite: 10 36
-Declaration (44)
-    à gauche: 35 36, à droite: 11
-AFonction (45)
-    à gauche: 37, à droite: 19
+Conditions (39)
+    à gauche: 21 22 23, à droite: 21 22 38 39
+Expression (40)
+    à gauche: 24 25 26 27 28 29 30 31 32, à droite: 20 26 27 28 29
+    30 31 32
+Comparateur (41)
+    à gauche: 33 34 35 36 37, à droite: 20
+Bloc_IF (42)
+    à gauche: 38, à droite: 17
+Bloc_WHILE (43)
+    à gauche: 39, à droite: 18
+Affectation (44)
+    à gauche: 40, à droite: 10 42
+Declaration (45)
+    à gauche: 41 42, à droite: 11
+AFonction (46)
+    à gauche: 43, à droite: 19
 
 
 État 0
@@ -313,8 +325,8 @@ AFonction (45)
 
 État 19
 
-   35 Declaration: INT . ID PVIR
-   36            | INT . ID Affectation
+   41 Declaration: INT . ID PVIR
+   42            | INT . ID Affectation
 
     ID  décalage et aller à l'état 32
 
@@ -322,7 +334,7 @@ AFonction (45)
 État 20
 
    10 Instruction: ID . Affectation
-   37 AFonction: ID . PO Parametres PF PVIR
+   43 AFonction: ID . PO Parametres PF PVIR
 
     EGAL  décalage et aller à l'état 33
     PO    décalage et aller à l'état 34
@@ -339,14 +351,14 @@ AFonction (45)
 
 État 22
 
-   32 Bloc_IF: IF . PO Conditions PF Body
+   38 Bloc_IF: IF . PO Conditions PF Body
 
     PO  décalage et aller à l'état 36
 
 
 État 23
 
-   33 Bloc_WHILE: WHILE . PO Conditions PF Body
+   39 Bloc_WHILE: WHILE . PO Conditions PF Body
 
     PO  décalage et aller à l'état 37
 
@@ -439,8 +451,8 @@ AFonction (45)
 
 État 32
 
-   35 Declaration: INT ID . PVIR
-   36            | INT ID . Affectation
+   41 Declaration: INT ID . PVIR
+   42            | INT ID . Affectation
 
     EGAL  décalage et aller à l'état 33
     PVIR  décalage et aller à l'état 41
@@ -450,14 +462,14 @@ AFonction (45)
 
 État 33
 
-   34 Affectation: EGAL . ENTIER PVIR
+   40 Affectation: EGAL . ENTIER PVIR
 
     ENTIER  décalage et aller à l'état 43
 
 
 État 34
 
-   37 AFonction: ID PO . Parametres PF PVIR
+   43 AFonction: ID PO . Parametres PF PVIR
 
     INT  décalage et aller à l'état 8
 
@@ -475,28 +487,30 @@ AFonction (45)
 
 État 36
 
-   32 Bloc_IF: IF PO . Conditions PF Body
+   38 Bloc_IF: IF PO . Conditions PF Body
 
-    ID       décalage et aller à l'état 45
-    DECIMAL  décalage et aller à l'état 46
-    ENTIER   décalage et aller à l'état 47
+    MOINS   décalage et aller à l'état 45
+    ID      décalage et aller à l'état 46
+    ENTIER  décalage et aller à l'état 47
+    PO      décalage et aller à l'état 48
 
-    Condition   aller à l'état 48
-    Conditions  aller à l'état 49
-    Expression  aller à l'état 50
+    Condition   aller à l'état 49
+    Conditions  aller à l'état 50
+    Expression  aller à l'état 51
 
 
 État 37
 
-   33 Bloc_WHILE: WHILE PO . Conditions PF Body
+   39 Bloc_WHILE: WHILE PO . Conditions PF Body
 
-    ID       décalage et aller à l'état 45
-    DECIMAL  décalage et aller à l'état 46
-    ENTIER   décalage et aller à l'état 47
+    MOINS   décalage et aller à l'état 45
+    ID      décalage et aller à l'état 46
+    ENTIER  décalage et aller à l'état 47
+    PO      décalage et aller à l'état 48
 
-    Condition   aller à l'état 48
-    Conditions  aller à l'état 51
-    Expression  aller à l'état 50
+    Condition   aller à l'état 49
+    Conditions  aller à l'état 52
+    Expression  aller à l'état 51
 
 
 État 38
@@ -522,244 +536,479 @@ AFonction (45)
 
 État 41
 
-   35 Declaration: INT ID PVIR .
+   41 Declaration: INT ID PVIR .
 
-    $défaut  réduction par utilisation de la règle 35 (Declaration)
+    $défaut  réduction par utilisation de la règle 41 (Declaration)
 
 
 État 42
 
-   36 Declaration: INT ID Affectation .
+   42 Declaration: INT ID Affectation .
 
-    $défaut  réduction par utilisation de la règle 36 (Declaration)
+    $défaut  réduction par utilisation de la règle 42 (Declaration)
 
 
 État 43
 
-   34 Affectation: EGAL ENTIER . PVIR
+   40 Affectation: EGAL ENTIER . PVIR
 
-    PVIR  décalage et aller à l'état 52
+    PVIR  décalage et aller à l'état 53
 
 
 État 44
 
-   37 AFonction: ID PO Parametres . PF PVIR
+   43 AFonction: ID PO Parametres . PF PVIR
 
-    PF  décalage et aller à l'état 53
+    PF  décalage et aller à l'état 54
 
 
 État 45
+
+   30 Expression: MOINS . Expression
+
+    MOINS   décalage et aller à l'état 45
+    ID      décalage et aller à l'état 46
+    ENTIER  décalage et aller à l'état 47
+    PO      décalage et aller à l'état 48
+
+    Expression  aller à l'état 55
+
+
+État 46
 
    24 Expression: ID .
 
     $défaut  réduction par utilisation de la règle 24 (Expression)
 
 
-État 46
+État 47
 
-   25 Expression: DECIMAL .
+   25 Expression: ENTIER .
 
     $défaut  réduction par utilisation de la règle 25 (Expression)
 
 
-État 47
-
-   26 Expression: ENTIER .
-
-    $défaut  réduction par utilisation de la règle 26 (Expression)
-
-
 État 48
+
+   32 Expression: PO . Expression PF
+
+    MOINS   décalage et aller à l'état 45
+    ID      décalage et aller à l'état 46
+    ENTIER  décalage et aller à l'état 47
+    PO      décalage et aller à l'état 48
+
+    Expression  aller à l'état 56
+
+
+État 49
 
    21 Conditions: Condition . OR Conditions
    22           | Condition . AND Conditions
    23           | Condition .
 
-    AND  décalage et aller à l'état 54
-    OR   décalage et aller à l'état 55
+    AND  décalage et aller à l'état 57
+    OR   décalage et aller à l'état 58
 
     $défaut  réduction par utilisation de la règle 23 (Conditions)
 
 
-État 49
-
-   32 Bloc_IF: IF PO Conditions . PF Body
-
-    PF  décalage et aller à l'état 56
-
-
 État 50
 
-   20 Condition: Expression . Comparateur Expression
+   38 Bloc_IF: IF PO Conditions . PF Body
 
-    EGAL  décalage et aller à l'état 57
-    INF   décalage et aller à l'état 58
-    SUP   décalage et aller à l'état 59
-
-    Comparateur  aller à l'état 60
+    PF  décalage et aller à l'état 59
 
 
 État 51
 
-   33 Bloc_WHILE: WHILE PO Conditions . PF Body
+   20 Condition: Expression . Comparateur Expression
+   26 Expression: Expression . PLUS Expression
+   27           | Expression . MOINS Expression
+   28           | Expression . MULT Expression
+   29           | Expression . DIV Expression
+   31           | Expression . EXP Expression
 
-    PF  décalage et aller à l'état 61
+    PLUS   décalage et aller à l'état 60
+    MOINS  décalage et aller à l'état 61
+    MULT   décalage et aller à l'état 62
+    DIV    décalage et aller à l'état 63
+    EGAL   décalage et aller à l'état 64
+    EXP    décalage et aller à l'état 65
+    INF    décalage et aller à l'état 66
+    SUP    décalage et aller à l'état 67
+
+    Comparateur  aller à l'état 68
 
 
 État 52
 
-   34 Affectation: EGAL ENTIER PVIR .
+   39 Bloc_WHILE: WHILE PO Conditions . PF Body
 
-    $défaut  réduction par utilisation de la règle 34 (Affectation)
+    PF  décalage et aller à l'état 69
 
 
 État 53
 
-   37 AFonction: ID PO Parametres PF . PVIR
+   40 Affectation: EGAL ENTIER PVIR .
 
-    PVIR  décalage et aller à l'état 62
+    $défaut  réduction par utilisation de la règle 40 (Affectation)
 
 
 État 54
 
-   22 Conditions: Condition AND . Conditions
+   43 AFonction: ID PO Parametres PF . PVIR
 
-    ID       décalage et aller à l'état 45
-    DECIMAL  décalage et aller à l'état 46
-    ENTIER   décalage et aller à l'état 47
-
-    Condition   aller à l'état 48
-    Conditions  aller à l'état 63
-    Expression  aller à l'état 50
+    PVIR  décalage et aller à l'état 70
 
 
 État 55
 
-   21 Conditions: Condition OR . Conditions
+   26 Expression: Expression . PLUS Expression
+   27           | Expression . MOINS Expression
+   28           | Expression . MULT Expression
+   29           | Expression . DIV Expression
+   30           | MOINS Expression .
+   31           | Expression . EXP Expression
 
-    ID       décalage et aller à l'état 45
-    DECIMAL  décalage et aller à l'état 46
-    ENTIER   décalage et aller à l'état 47
+    PLUS   décalage et aller à l'état 60
+    MOINS  décalage et aller à l'état 61
+    MULT   décalage et aller à l'état 62
+    DIV    décalage et aller à l'état 63
+    EXP    décalage et aller à l'état 65
 
-    Condition   aller à l'état 48
-    Conditions  aller à l'état 64
-    Expression  aller à l'état 50
+    PLUS      [réduction par utilisation de la règle 30 (Expression)]
+    MOINS     [réduction par utilisation de la règle 30 (Expression)]
+    MULT      [réduction par utilisation de la règle 30 (Expression)]
+    DIV       [réduction par utilisation de la règle 30 (Expression)]
+    EXP       [réduction par utilisation de la règle 30 (Expression)]
+    $défaut  réduction par utilisation de la règle 30 (Expression)
 
 
 État 56
 
-   32 Bloc_IF: IF PO Conditions PF . Body
+   26 Expression: Expression . PLUS Expression
+   27           | Expression . MOINS Expression
+   28           | Expression . MULT Expression
+   29           | Expression . DIV Expression
+   31           | Expression . EXP Expression
+   32           | PO Expression . PF
 
-    AO  décalage et aller à l'état 16
-
-    Body  aller à l'état 65
+    PLUS   décalage et aller à l'état 60
+    MOINS  décalage et aller à l'état 61
+    MULT   décalage et aller à l'état 62
+    DIV    décalage et aller à l'état 63
+    EXP    décalage et aller à l'état 65
+    PF     décalage et aller à l'état 71
 
 
 État 57
 
-   29 Comparateur: EGAL . EGAL
+   22 Conditions: Condition AND . Conditions
 
-    EGAL  décalage et aller à l'état 66
+    MOINS   décalage et aller à l'état 45
+    ID      décalage et aller à l'état 46
+    ENTIER  décalage et aller à l'état 47
+    PO      décalage et aller à l'état 48
+
+    Condition   aller à l'état 49
+    Conditions  aller à l'état 72
+    Expression  aller à l'état 51
 
 
 État 58
 
-   27 Comparateur: INF .
-   30            | INF . EGAL
+   21 Conditions: Condition OR . Conditions
 
-    EGAL  décalage et aller à l'état 67
+    MOINS   décalage et aller à l'état 45
+    ID      décalage et aller à l'état 46
+    ENTIER  décalage et aller à l'état 47
+    PO      décalage et aller à l'état 48
 
-    $défaut  réduction par utilisation de la règle 27 (Comparateur)
+    Condition   aller à l'état 49
+    Conditions  aller à l'état 73
+    Expression  aller à l'état 51
 
 
 État 59
 
-   28 Comparateur: SUP .
-   31            | SUP . EGAL
+   38 Bloc_IF: IF PO Conditions PF . Body
 
-    EGAL  décalage et aller à l'état 68
+    AO  décalage et aller à l'état 16
 
-    $défaut  réduction par utilisation de la règle 28 (Comparateur)
+    Body  aller à l'état 74
 
 
 État 60
 
-   20 Condition: Expression Comparateur . Expression
+   26 Expression: Expression PLUS . Expression
 
-    ID       décalage et aller à l'état 45
-    DECIMAL  décalage et aller à l'état 46
-    ENTIER   décalage et aller à l'état 47
+    MOINS   décalage et aller à l'état 45
+    ID      décalage et aller à l'état 46
+    ENTIER  décalage et aller à l'état 47
+    PO      décalage et aller à l'état 48
 
-    Expression  aller à l'état 69
+    Expression  aller à l'état 75
 
 
 État 61
 
-   33 Bloc_WHILE: WHILE PO Conditions PF . Body
+   27 Expression: Expression MOINS . Expression
 
-    AO  décalage et aller à l'état 16
+    MOINS   décalage et aller à l'état 45
+    ID      décalage et aller à l'état 46
+    ENTIER  décalage et aller à l'état 47
+    PO      décalage et aller à l'état 48
 
-    Body  aller à l'état 70
+    Expression  aller à l'état 76
 
 
 État 62
 
-   37 AFonction: ID PO Parametres PF PVIR .
+   28 Expression: Expression MULT . Expression
 
-    $défaut  réduction par utilisation de la règle 37 (AFonction)
+    MOINS   décalage et aller à l'état 45
+    ID      décalage et aller à l'état 46
+    ENTIER  décalage et aller à l'état 47
+    PO      décalage et aller à l'état 48
+
+    Expression  aller à l'état 77
 
 
 État 63
+
+   29 Expression: Expression DIV . Expression
+
+    MOINS   décalage et aller à l'état 45
+    ID      décalage et aller à l'état 46
+    ENTIER  décalage et aller à l'état 47
+    PO      décalage et aller à l'état 48
+
+    Expression  aller à l'état 78
+
+
+État 64
+
+   35 Comparateur: EGAL . EGAL
+
+    EGAL  décalage et aller à l'état 79
+
+
+État 65
+
+   31 Expression: Expression EXP . Expression
+
+    MOINS   décalage et aller à l'état 45
+    ID      décalage et aller à l'état 46
+    ENTIER  décalage et aller à l'état 47
+    PO      décalage et aller à l'état 48
+
+    Expression  aller à l'état 80
+
+
+État 66
+
+   33 Comparateur: INF .
+   36            | INF . EGAL
+
+    EGAL  décalage et aller à l'état 81
+
+    $défaut  réduction par utilisation de la règle 33 (Comparateur)
+
+
+État 67
+
+   34 Comparateur: SUP .
+   37            | SUP . EGAL
+
+    EGAL  décalage et aller à l'état 82
+
+    $défaut  réduction par utilisation de la règle 34 (Comparateur)
+
+
+État 68
+
+   20 Condition: Expression Comparateur . Expression
+
+    MOINS   décalage et aller à l'état 45
+    ID      décalage et aller à l'état 46
+    ENTIER  décalage et aller à l'état 47
+    PO      décalage et aller à l'état 48
+
+    Expression  aller à l'état 83
+
+
+État 69
+
+   39 Bloc_WHILE: WHILE PO Conditions PF . Body
+
+    AO  décalage et aller à l'état 16
+
+    Body  aller à l'état 84
+
+
+État 70
+
+   43 AFonction: ID PO Parametres PF PVIR .
+
+    $défaut  réduction par utilisation de la règle 43 (AFonction)
+
+
+État 71
+
+   32 Expression: PO Expression PF .
+
+    $défaut  réduction par utilisation de la règle 32 (Expression)
+
+
+État 72
 
    22 Conditions: Condition AND Conditions .
 
     $défaut  réduction par utilisation de la règle 22 (Conditions)
 
 
-État 64
+État 73
 
    21 Conditions: Condition OR Conditions .
 
     $défaut  réduction par utilisation de la règle 21 (Conditions)
 
 
-État 65
+État 74
 
-   32 Bloc_IF: IF PO Conditions PF Body .
+   38 Bloc_IF: IF PO Conditions PF Body .
 
-    $défaut  réduction par utilisation de la règle 32 (Bloc_IF)
-
-
-État 66
-
-   29 Comparateur: EGAL EGAL .
-
-    $défaut  réduction par utilisation de la règle 29 (Comparateur)
+    $défaut  réduction par utilisation de la règle 38 (Bloc_IF)
 
 
-État 67
+État 75
 
-   30 Comparateur: INF EGAL .
+   26 Expression: Expression . PLUS Expression
+   26           | Expression PLUS Expression .
+   27           | Expression . MOINS Expression
+   28           | Expression . MULT Expression
+   29           | Expression . DIV Expression
+   31           | Expression . EXP Expression
 
-    $défaut  réduction par utilisation de la règle 30 (Comparateur)
+    MULT  décalage et aller à l'état 62
+    DIV   décalage et aller à l'état 63
+    EXP   décalage et aller à l'état 65
+
+    EXP       [réduction par utilisation de la règle 26 (Expression)]
+    $défaut  réduction par utilisation de la règle 26 (Expression)
 
 
-État 68
+État 76
 
-   31 Comparateur: SUP EGAL .
+   26 Expression: Expression . PLUS Expression
+   27           | Expression . MOINS Expression
+   27           | Expression MOINS Expression .
+   28           | Expression . MULT Expression
+   29           | Expression . DIV Expression
+   31           | Expression . EXP Expression
 
-    $défaut  réduction par utilisation de la règle 31 (Comparateur)
+    MULT  décalage et aller à l'état 62
+    DIV   décalage et aller à l'état 63
+    EXP   décalage et aller à l'état 65
+
+    EXP       [réduction par utilisation de la règle 27 (Expression)]
+    $défaut  réduction par utilisation de la règle 27 (Expression)
 
 
-État 69
+État 77
+
+   26 Expression: Expression . PLUS Expression
+   27           | Expression . MOINS Expression
+   28           | Expression . MULT Expression
+   28           | Expression MULT Expression .
+   29           | Expression . DIV Expression
+   31           | Expression . EXP Expression
+
+    EXP  décalage et aller à l'état 65
+
+    EXP       [réduction par utilisation de la règle 28 (Expression)]
+    $défaut  réduction par utilisation de la règle 28 (Expression)
+
+
+État 78
+
+   26 Expression: Expression . PLUS Expression
+   27           | Expression . MOINS Expression
+   28           | Expression . MULT Expression
+   29           | Expression . DIV Expression
+   29           | Expression DIV Expression .
+   31           | Expression . EXP Expression
+
+    EXP  décalage et aller à l'état 65
+
+    EXP       [réduction par utilisation de la règle 29 (Expression)]
+    $défaut  réduction par utilisation de la règle 29 (Expression)
+
+
+État 79
+
+   35 Comparateur: EGAL EGAL .
+
+    $défaut  réduction par utilisation de la règle 35 (Comparateur)
+
+
+État 80
+
+   26 Expression: Expression . PLUS Expression
+   27           | Expression . MOINS Expression
+   28           | Expression . MULT Expression
+   29           | Expression . DIV Expression
+   31           | Expression . EXP Expression
+   31           | Expression EXP Expression .
+
+    PLUS   décalage et aller à l'état 60
+    MOINS  décalage et aller à l'état 61
+    MULT   décalage et aller à l'état 62
+    DIV    décalage et aller à l'état 63
+    EXP    décalage et aller à l'état 65
+
+    PLUS      [réduction par utilisation de la règle 31 (Expression)]
+    MOINS     [réduction par utilisation de la règle 31 (Expression)]
+    MULT      [réduction par utilisation de la règle 31 (Expression)]
+    DIV       [réduction par utilisation de la règle 31 (Expression)]
+    EXP       [réduction par utilisation de la règle 31 (Expression)]
+    $défaut  réduction par utilisation de la règle 31 (Expression)
+
+
+État 81
+
+   36 Comparateur: INF EGAL .
+
+    $défaut  réduction par utilisation de la règle 36 (Comparateur)
+
+
+État 82
+
+   37 Comparateur: SUP EGAL .
+
+    $défaut  réduction par utilisation de la règle 37 (Comparateur)
+
+
+État 83
 
    20 Condition: Expression Comparateur Expression .
+   26 Expression: Expression . PLUS Expression
+   27           | Expression . MOINS Expression
+   28           | Expression . MULT Expression
+   29           | Expression . DIV Expression
+   31           | Expression . EXP Expression
+
+    PLUS   décalage et aller à l'état 60
+    MOINS  décalage et aller à l'état 61
+    MULT   décalage et aller à l'état 62
+    DIV    décalage et aller à l'état 63
+    EXP    décalage et aller à l'état 65
 
     $défaut  réduction par utilisation de la règle 20 (Condition)
 
 
-État 70
+État 84
 
-   33 Bloc_WHILE: WHILE PO Conditions PF Body .
+   39 Bloc_WHILE: WHILE PO Conditions PF Body .
 
-    $défaut  réduction par utilisation de la règle 33 (Bloc_WHILE)
+    $défaut  réduction par utilisation de la règle 39 (Bloc_WHILE)
