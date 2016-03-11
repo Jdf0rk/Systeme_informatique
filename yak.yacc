@@ -44,7 +44,8 @@ SuiteParametres : 	VIR INT ID SuiteParametres
 Body :			AO Instructions AF;
 
 Instruction :		ID Affectation				{int adresse=getVarAddr($1);
-								printf("AFC @%d %d\n", adresse, $2);}
+								printf("COP @%d @%d\n", adresse, $2);
+								}
 								
 			|Declaration
 			|PVIR;
@@ -67,19 +68,45 @@ Conditions: 		Condition OR Conditions
 Expression:		ID 					{ int addr = getVarAddr($1);
 								int addrI = getRegistre(); 
 								if (addr==-1){printf("La variable n'est pas déclarée\n");}
-								else {printf("COP @%d %d\n", addrI, addr);$$=addrI;}}
+								else {printf("COP @%d @%d\n", addrI, addr);
+								$$=addrI;}}
  			
 			|ENTIER 				{ int addrI=getRegistre(); printf("AFC @%d %d\n", addrI, $1); $$ = addrI; }
+			
 			| Expression PLUS Expression 		{ libererRegistre();
 								libererRegistre(); 
 								int addrI=getRegistre(); 
-								printf("ADD @%d @%d @%d\n", addrI, $1, $3); }
-			| Expression MOINS Expression {}
-			| Expression MULT Expression {}
-			| Expression DIV Expression {}
-			| MOINS Expression %prec NEG  {}
+								printf("ADD @%d @%d @%d\n", addrI, $1, $3); 
+								$$=addrI;}
+			
+			| Expression MOINS Expression {		libererRegistre();
+								libererRegistre(); 
+								int addrI=getRegistre(); 
+								printf("SOU @%d @%d @%d\n", addrI, $1, $3); 
+								$$=addrI;}
+			
+			| Expression MULT Expression {		libererRegistre();
+								libererRegistre(); 
+								int addrI=getRegistre(); 
+								printf("MULT @%d @%d @%d\n", addrI, $1, $3);
+								$$=addrI;}
+			
+			| Expression DIV Expression {		libererRegistre();
+								libererRegistre(); 
+								int addrI=getRegistre(); 
+								printf("DIV @%d @%d @%d\n", addrI, $1, $3);
+								$$=addrI;}
+			
+			| MOINS Expression %prec NEG  {		int addrZ = getRegistre();
+								printf("AFC @%d %d\n", addrZ, 0);
+								libererRegistre();
+								printf("SOU @%d @%d @%d\n", $2, addrZ, $2);
+								$$=$2;
+								}
+			
 			| Expression EXP Expression {}
-			| PO Expression PF  {}
+			
+			| PO Expression PF  {			$$=$2;}
 			;			
 
 			
@@ -93,12 +120,12 @@ Bloc_IF:		IF PO Conditions PF Body;
 
 Bloc_WHILE:		WHILE PO Conditions PF Body;
 
-Affectation :		EGAL ENTIER PVIR			{$$=$2;};
+Affectation :		EGAL Expression PVIR			{libererRegistre();$$=$2;};
 
 Declaration :		INT ID PVIR				{add($2,"int", 0, 0);}
 			|INT ID Affectation			{int adresse=add($2,"int", 0, 0);
 								if (adresse!=-1){
-									printf("AFC @%d %d\n", adresse, $3);}
+									printf("COP @%d @%d\n", adresse, $3);}
 								else{
 									printf("variable déjà déclarée\n");}
 								};
