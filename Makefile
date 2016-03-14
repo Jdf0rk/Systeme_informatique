@@ -16,7 +16,8 @@ lexeur:
 	$(CC) -c lex.lex.c -o lex.lex.o
 	$(CC) -c yak.y.c -o yak.y.o
 	$(CC) -c symtable.c
-	$(CC) -o lexeur lex.lex.o yak.y.o symtable.o -ll -lm
+	$(CC) -c labeltable.c
+	$(CC) -o lexeur lex.lex.o yak.y.o symtable.o labeltable.o -ll -lm
 	
 	
     

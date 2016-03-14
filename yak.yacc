@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "symtable.h"
+#include "labeltable.h"
+
+int pc=0;
+int addrCond=-1;
 %}
 //viré le espace et sautligne et tab
 //viré le main
@@ -9,6 +13,9 @@
 %union {int val; char* str; float dec;}
 %type <val> Affectation
 %type <val> Expression
+%type <val> PC
+%type <val> Condition
+%type <val> Conditions
 
 %left PLUS MOINS
 %left MULT DIV
@@ -24,7 +31,8 @@
 %token VIR PVIR
 %token AO AF PO PF
 %token INF SUP 
-%token IF WHILE
+%token <val> IF 
+%token WHILE
 %token AND
 %token OR
 
@@ -41,10 +49,11 @@ Parametres : 		INT ID SuiteParametres
 SuiteParametres : 	VIR INT ID SuiteParametres
 			|VIR INT;
 			
-Body :			AO Instructions AF;
+Body :			AO Instructions AF			{setLabel(pc);};
 
 Instruction :		ID Affectation				{int adresse=getVarAddr($1);
 								printf("COP @%d @%d\n", adresse, $2);
+								pc++;
 								}
 								
 			|Declaration
@@ -58,74 +67,134 @@ Instructions :		Bloc Instructions
 Bloc :			Bloc_IF
 			|Bloc_WHILE
 			|AFonction;
+						
+Condition: 		Expression INF Expression		{addrCond=getRegistre();
+								printf("INF @%d @%d @%d\n", addrCond, $1, $3);
+								pc++;
+								$$=addrCond;
+								}
+								
+			|Expression SUP Expression		{addrCond=getRegistre();
+								printf("SUP @%d @%d @%d\n", addrCond, $1, $3);
+								pc++;
+								$$=addrCond;
+								}
+								
+			|Expression EGAL EGAL Expression	{addrCond=getRegistre();
+								printf("EQU @%d @%d @%d\n", addrCond, $1, $4);
+								pc++;
+								$$=addrCond;
+								};
+
+Conditions: 		Condition OR Conditions			{int addrU = getRegistre();
+								printf("AFC @%d %d\n", addrU, 1);								
+								pc++;
+								int addrZ = getRegistre();
+								printf("AFC @%d %d\n", addrZ, 0);								
+								pc++;
+								printf("EQU @%d @%d @%d\n", $1, $1, addrU);
+								pc++;
+								printf("EQU @%d @%d @%d\n", $3, $3, addrU);
+								pc++;
+								printf("ADD @%d @%d @%d\n", $1, $1, $3);
+								pc++;
+								printf("SUP @%d @%d @%d\n", $1, $1, addrZ);
+								pc++;
+								libererRegistre();
+								addrCond=$1;
+								}
 			
-Condition: 		Expression Comparateur Expression;
+			|Condition AND Conditions		{int addrU = getRegistre();
+								printf("AFC @%d %d\n", addrU, 1);								
+								pc++;
+								printf("EQU @%d @%d @%d\n", $1, $1, addrU);
+								pc++;
+								printf("EQU @%d @%d @%d\n", $3, $3, addrU);
+								pc++;
+								printf("EQU @%d @%d @%d\n", $1, $1, $3);
+								pc++;
+								libererRegistre();
+								addrCond=$1;
+								}
+		
+			|Condition				{};
 
-Conditions: 		Condition OR Conditions
-			|Condition AND Conditions
-			|Condition;
-
-Expression:		ID 					{ int addr = getVarAddr($1);
+Expression:		ID 					{int addr = getVarAddr($1);
 								int addrI = getRegistre(); 
 								if (addr==-1){printf("La variable n'est pas déclarée\n");}
 								else {printf("COP @%d @%d\n", addrI, addr);
+								pc++;
 								$$=addrI;}}
  			
-			|ENTIER 				{ int addrI=getRegistre(); printf("AFC @%d %d\n", addrI, $1); $$ = addrI; }
+			|ENTIER 				{int addrI=getRegistre(); 
+								printf("AFC @%d %d\n", addrI, $1); 
+								pc++;
+								$$ = addrI; }
 			
-			| Expression PLUS Expression 		{ libererRegistre();
+			| Expression PLUS Expression 		{libererRegistre();
 								libererRegistre(); 
 								int addrI=getRegistre(); 
-								printf("ADD @%d @%d @%d\n", addrI, $1, $3); 
+								printf("ADD @%d @%d @%d\n", addrI, $1, $3);
+								pc++;
 								$$=addrI;}
 			
-			| Expression MOINS Expression {		libererRegistre();
+			| Expression MOINS Expression 		{libererRegistre();
 								libererRegistre(); 
 								int addrI=getRegistre(); 
-								printf("SOU @%d @%d @%d\n", addrI, $1, $3); 
+								printf("SOU @%d @%d @%d\n", addrI, $1, $3);
+								pc++;
 								$$=addrI;}
 			
-			| Expression MULT Expression {		libererRegistre();
+			| Expression MULT Expression 		{libererRegistre();
 								libererRegistre(); 
 								int addrI=getRegistre(); 
 								printf("MULT @%d @%d @%d\n", addrI, $1, $3);
+								pc++;
 								$$=addrI;}
 			
-			| Expression DIV Expression {		libererRegistre();
+			| Expression DIV Expression 		{libererRegistre();
 								libererRegistre(); 
 								int addrI=getRegistre(); 
 								printf("DIV @%d @%d @%d\n", addrI, $1, $3);
+								pc++;
 								$$=addrI;}
 			
-			| MOINS Expression %prec NEG  {		int addrZ = getRegistre();
+			| MOINS Expression %prec NEG  		{int addrZ = getRegistre();
 								printf("AFC @%d %d\n", addrZ, 0);
+								pc++;
 								libererRegistre();
 								printf("SOU @%d @%d @%d\n", $2, addrZ, $2);
+								pc++;
 								$$=$2;
 								}
 			
-			| Expression EXP Expression {}
+			| Expression EXP Expression 		{}
 			
-			| PO Expression PF  {			$$=$2;}
+			| PO Expression PF  			{$$=$2;}
 			;			
 
-			
-Comparateur:		INF				//eventuellement ne pas le factoriser
-			|SUP
-			|EGAL EGAL
-			|INF EGAL
-			|SUP EGAL;
+Bloc_IF:		IF PO Conditions PF Jumpf Body		{libererRegistre();};						
 
-Bloc_IF:		IF PO Conditions PF Body;
+Bloc_WHILE:		WHILE PO PC Conditions PF Jumpf Body 	{printf("JMP %d\n",$3);
+								pc++;
+								libererRegistre();};
+	
+Jumpf :								{int l=newLabel();
+								char * nom = getNom(l);
+								printf("JMF %d %s\n",addrCond,nom);
+								pc++;};
 
-Bloc_WHILE:		WHILE PO Conditions PF Body;
+PC :								{$$=pc;};
+								
+
 
 Affectation :		EGAL Expression PVIR			{libererRegistre();$$=$2;};
 
 Declaration :		INT ID PVIR				{add($2,"int", 0, 0);}
 			|INT ID Affectation			{int adresse=add($2,"int", 0, 0);
 								if (adresse!=-1){
-									printf("COP @%d @%d\n", adresse, $3);}
+									printf("COP @%d @%d\n", adresse, $3);
+									pc++;}
 								else{
 									printf("variable déjà déclarée\n");}
 								};
