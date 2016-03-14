@@ -86,15 +86,8 @@ Condition: 		Expression INF Expression		{addrCond=getRegistre();
 								$$=addrCond;
 								};
 
-Conditions: 		Condition OR Conditions			{int addrU = getRegistre();
-								printf("AFC @%d %d\n", addrU, 1);								
-								pc++;
-								int addrZ = getRegistre();
-								printf("AFC @%d %d\n", addrZ, 0);								
-								pc++;
-								printf("EQU @%d @%d @%d\n", $1, $1, addrU);
-								pc++;
-								printf("EQU @%d @%d @%d\n", $3, $3, addrU);
+Conditions: 		Condition OR Conditions			{int addrZ = getRegistre();
+								printf("AFC @%d %d\n",addrZ,0);							
 								pc++;
 								printf("ADD @%d @%d @%d\n", $1, $1, $3);
 								pc++;
@@ -104,14 +97,12 @@ Conditions: 		Condition OR Conditions			{int addrU = getRegistre();
 								addrCond=$1;
 								}
 			
-			|Condition AND Conditions		{int addrU = getRegistre();
-								printf("AFC @%d %d\n", addrU, 1);								
+			|Condition AND Conditions		{int addrD = getRegistre();
+								printf("AFC @%d %d\n", addrD, 2);						
 								pc++;
-								printf("EQU @%d @%d @%d\n", $1, $1, addrU);
+								printf("ADD @%d @%d @%d\n", $1, $1, $3);
 								pc++;
-								printf("EQU @%d @%d @%d\n", $3, $3, addrU);
-								pc++;
-								printf("EQU @%d @%d @%d\n", $1, $1, $3);
+								printf("EQU @%d @%d @%d\n", $1, $1, addrD);
 								pc++;
 								libererRegistre();
 								addrCond=$1;
