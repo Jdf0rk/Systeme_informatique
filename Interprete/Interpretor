@@ -1,0 +1,46 @@
+Interpréteur
+
+01 23 29
+02 .. ..
+03 etc
+
+LEX  ---->
+^02 return ADD; // début de ligne code opération return traduction
+
+
+
+[0-9]+  {yylval = atoi(yytext); return NB;} //(voir yacc précédent)
+
+
+YACC ---->
+
+%%
+S: opé S {
+
+Add:        ADD NB NB NB2 { ins [i][a=O] = ADD; // [i][0] =opé, [i][1] = param 1
+                          i++; // !!!
+                          }
+%%
+yyparse();
+int n = 0;
+while(n < i)
+{
+  if(ins[n][0] == ADD){
+      sum = (ins[n][1])+
+      (ins[n][2])+
+      (ins[n][...])
+      }
+  else if(..... == JUMP){
+      n = ins[n][1];
+
+
+  }
+
+  }
+
+
+
+}
+
+
+}
