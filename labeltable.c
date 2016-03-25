@@ -6,7 +6,7 @@ struct label tableL[TAILLEL];
 
 int newLabel() {
 	
-	char* nom;
+	char nom[10];
 	sprintf(nom,"LABEL%d",compteurNewL);
 	struct label lab = {nom,-1};
 	tableL[compteurNewL]=lab;
@@ -33,4 +33,9 @@ int newLabel() {
  char * getNom(int indice){
  	
  	return tableL[indice].nom;
- } 		
+ }
+ 
+ int getLabel (int indice) {
+ 	
+ 	return tableL[indice].cible;
+ }		

@@ -6,8 +6,6 @@
 
 int pc=0;
 int addrCond=-1;
-char chaine[50];
-FILE* fichier=NULL;
 %}
 //viré le espace et sautligne et tab
 //viré le main
@@ -45,7 +43,7 @@ FILE* fichier=NULL;
 Input : 		DFonction Input
 			|DFonction;
 
-DFonction : 		INT ID PO Parametres PF Body; //changer eventuellement ID par main
+DFonction : 		INT ID PO Parametres PF {printf("hello main\n");} Body; //changer eventuellement ID par main
 
 Parametres : 		INT ID SuiteParametres
 			|;
@@ -55,9 +53,7 @@ SuiteParametres : 	VIR INT ID SuiteParametres
 Body :			AO Instructions AF			{setLabel(pc);};
 
 Instruction :		ID Affectation				{int adresse=getVarAddr($1);
-								//printf("COP @%d @%d\n", adresse, $2);
-								sprintf(chaine,"5 %d %d\n",adresse, $2);
-								fputs(chaine, fichier);
+								printf("COP @%d @%d\n", adresse, $2);
 								pc++;
 								}
 								
@@ -75,61 +71,43 @@ Bloc :			Bloc_IF
 						
 Condition: 		Expression INF Expression		{libererRegistre();libererRegistre();
 								addrCond=getRegistre();
-								//printf("INF @%d @%d @%d\n", addrCond, $1, $3);
-								sprintf(chaine,"9 %d %d %d\n",addrCond, $1, $3);
-								fputs(chaine, fichier);
+								printf("INF @%d @%d @%d\n", addrCond, $1, $3);
 								pc++;
 								$$=addrCond;
 								}
 								
 			|Expression SUP Expression		{libererRegistre();libererRegistre();
 								addrCond=getRegistre();
-								//printf("SUP @%d @%d @%d\n", addrCond, $1, $3);
-								sprintf(chaine,"A %d %d %d\n",addrCond, $1, $3);
-								fputs(chaine, fichier);
+								printf("SUP @%d @%d @%d\n", addrCond, $1, $3);
 								pc++;
 								$$=addrCond;
 								}
 								
 			|Expression EGAL EGAL Expression	{libererRegistre();libererRegistre();
 								addrCond=getRegistre();
-								//printf("EQU @%d @%d @%d\n", addrCond, $1, $4);
-								sprintf(chaine,"B %d %d %d\n",addrCond, $1, $4);
-								fputs(chaine, fichier);
+								printf("EQU @%d @%d @%d\n", addrCond, $1, $4);
 								pc++;
 								$$=addrCond;
 								};
 			
 
 Conditions: 		Condition OR Conditions			{int addrZ = getRegistre();
-								//printf("AFC @%d %d\n",addrZ,0);
-								sprintf(chaine,"6 %d %d\n",addrZ, 0);
-								fputs(chaine, fichier);			
+								printf("AFC @%d %d\n",addrZ,0);			
 								pc++;
-								//printf("ADD @%d @%d @%d\n", $1, $1, $3);
-								sprintf(chaine,"1 %d %d %d\n",$1, $1, $3);
-								fputs(chaine, fichier);	
+								printf("ADD @%d @%d @%d\n", $1, $1, $3);
 								pc++;
-								//printf("SUP @%d @%d @%d\n", $1, $1, addrZ);
-								sprintf(chaine,"A %d %d %d\n",$1, $1, addrZ);
-								fputs(chaine, fichier);	
+								printf("SUP @%d @%d @%d\n", $1, $1, addrZ);
 								pc++;
 								libererRegistre();
 								addrCond=$1;
 								}
 			
 			|Condition AND Conditions		{int addrD = getRegistre();
-								//printf("AFC @%d %d\n", addrD, 2);
-								sprintf(chaine,"6 %d %d\n",addrD, 2);
-								fputs(chaine, fichier);						
+								printf("AFC @%d %d\n", addrD, 2);						
 								pc++;
-								//printf("ADD @%d @%d @%d\n", $1, $1, $3);
-								sprintf(chaine,"1 %d %d %d\n",$1, $1, $3);
-								fputs(chaine, fichier);	
+								printf("ADD @%d @%d @%d\n", $1, $1, $3);
 								pc++;
-								//printf("EQU @%d @%d @%d\n", $1, $1, addrD);
-								sprintf(chaine,"B %d %d %d\n", $1, $1, addrD);
-								fputs(chaine, fichier);
+								printf("EQU @%d @%d @%d\n", $1, $1, addrD);
 								pc++;
 								libererRegistre();
 								addrCond=$1;
@@ -139,66 +117,49 @@ Conditions: 		Condition OR Conditions			{int addrZ = getRegistre();
 
 Expression:		ID 					{int addr = getVarAddr($1);
 								int addrI = getRegistre(); 
-								if (addr==-1){//printf("La variable n'est pas déclarée\n");
-									yyerror("La variable n'est pas déclarée\n");}
-								else {//printf("COP @%d @%d\n", addrI, addr);
-								sprintf(chaine,"5 %d %d\n",addrI, addr);
-								fputs(chaine, fichier);
+								if (addr==-1){printf("La variable n'est pas déclarée\n");}
+								else {printf("COP @%d @%d\n", addrI, addr);
 								pc++;
 								$$=addrI;}}
  			
 			|ENTIER 				{int addrI=getRegistre(); 
-								//printf("AFC @%d %d\n", addrI, $1); 
-								sprintf(chaine,"6 %d %d\n",addrI, $1);
-								fputs(chaine, fichier);	
+								printf("AFC @%d %d\n", addrI, $1); 
 								pc++;
 								$$ = addrI; }
 			
 			| Expression PLUS Expression 		{libererRegistre();
 								libererRegistre(); 
 								int addrI=getRegistre(); 
-								//printf("ADD @%d @%d @%d\n", addrI, $1, $3);
-								sprintf(chaine,"1 %d %d %d\n",addrI, $1, $3);
-								fputs(chaine, fichier);	
+								printf("ADD @%d @%d @%d\n", addrI, $1, $3);
 								pc++;
 								$$=addrI;}
 			
 			| Expression MOINS Expression 		{libererRegistre();
 								libererRegistre(); 
 								int addrI=getRegistre(); 
-								//printf("SOU @%d @%d @%d\n", addrI, $1, $3);
-								sprintf(chaine,"3 %d %d %d\n",addrI, $1, $3);
-								fputs(chaine, fichier);	
+								printf("SOU @%d @%d @%d\n", addrI, $1, $3);
 								pc++;
 								$$=addrI;}
 			
 			| Expression MULT Expression 		{libererRegistre();
 								libererRegistre(); 
 								int addrI=getRegistre(); 
-								//printf("MUL @%d @%d @%d\n", addrI, $1, $3);
-								sprintf(chaine,"2 %d %d %d\n",addrI, $1, $3);
-								fputs(chaine, fichier);	
+								printf("MULT @%d @%d @%d\n", addrI, $1, $3);
 								pc++;
 								$$=addrI;}
 			
 			| Expression DIV Expression 		{libererRegistre();
 								libererRegistre(); 
 								int addrI=getRegistre(); 
-								//printf("DIV @%d @%d @%d\n", addrI, $1, $3);
-								sprintf(chaine,"4 %d %d %d\n",addrI, $1, $3);
-								fputs(chaine, fichier);	
+								printf("DIV @%d @%d @%d\n", addrI, $1, $3);
 								pc++;
 								$$=addrI;}
 			
 			| MOINS Expression %prec NEG  		{int addrZ = getRegistre();
-								//printf("AFC @%d %d\n", addrZ, 0);
-								sprintf(chaine,"6 %d %d\n",addrZ, 0);
-								fputs(chaine, fichier);	
+								printf("AFC @%d %d\n", addrZ, 0);
 								pc++;
 								libererRegistre();
-								//printf("SOU @%d @%d @%d\n", $2, addrZ, $2);
-								sprintf(chaine,"3 %d %d %d\n", $2, addrZ, $2);
-								fputs(chaine, fichier);	
+								printf("SOU @%d @%d @%d\n", $2, addrZ, $2);
 								pc++;
 								$$=$2;
 								}
@@ -210,17 +171,13 @@ Expression:		ID 					{int addr = getVarAddr($1);
 
 Bloc_IF:		IF PO Conditions {libererRegistre();} PF Jumpf Body		;						
 
-Bloc_WHILE:		WHILE PO PC Conditions PF Jumpf Body 	{//printf("JMP %d\n",$3);
-								sprintf(chaine,"7 %d\n",$3);
-								fputs(chaine, fichier);	
+Bloc_WHILE:		WHILE PO PC Conditions PF Jumpf Body 	{printf("JMP %d\n",$3);
 								pc++;
 								libererRegistre();};
 	
 Jumpf :								{int l=newLabel();
 								char * nom = getNom(l);
-								//printf("JMF @%d %s\n",addrCond,nom);
-								sprintf(chaine,"8 %d %s\n", addrCond, nom);
-								fputs(chaine, fichier);	
+								printf("JMF @%d %s\n",addrCond,nom);
 								pc++;};
 
 PC :								{$$=pc;};
@@ -230,16 +187,12 @@ PC :								{$$=pc;};
 Affectation :		EGAL Expression PVIR			{libererRegistre();$$=$2;};
 
 Declaration :		INT ID PVIR				{add($2,"int", 0, 0);}
-
 			|INT ID Affectation			{int adresse=add($2,"int", 0, 0);
 								if (adresse!=-1){
-									//printf("COP @%d @%d\n", adresse, $3);
-									sprintf(chaine,"5 %d %d\n",adresse, $3);
-									fputs(chaine, fichier);
+									printf("COP @%d @%d\n", adresse, $3);
 									pc++;}
 								else{
-									//printf("variable déjà déclarée\n");}
-									yyerror("La variable n'est pas déclarée\n");}					
+									printf("variable déjà déclarée\n");}
 								};
 
 
@@ -250,20 +203,17 @@ AFonction :		ID PO Parametres PF PVIR;
 
 %%
 int yyerror(char *s) {
-	printf("%s\n",s);
-	fclose(fichier);
-	fichier = fopen("./assembleur", "w+");
-	fprintf (fichier,"%s\n",s);
-	fclose(fichier);
-	exit(666);
+  printf("%s\n",s);
 }
 
 int main(void) {
  
-	fichier = fopen("./assembleur", "w+");
-	yyparse();
-	//on remplace les labels par leur valeur dans la table
-	
+ 
+ 
+ 
+  yyparse();
+  
+  
   
 }
 			
