@@ -6,17 +6,17 @@
 
 %%
 
-^01 return ADD; //@rés @opé @opé
-^02 return MUL; //@rés @opé @opé
-^03 return SOU; //@rés @opé @opé
-^04 return DIV; //@rés @opé @opé
-^05 return COP; //@rés @opé
-^06 return AFC; //@res val_cons
-^07 return JMP; //n° instruction
-^08 return JMF; //@X n° instruction
-^09 return INF; //@rés @opé @opé
-^A return SUP;  //@rés @opé @opé
-^B return EQU;  //@rés @opé @opé
-^C return PRI;  //@rés
+^01 return tADD; //@rés @opé @opé
+^02 return tMUL; //@rés @opé @opé
+^03 return tSOU; //@rés @opé @opé
+^04 return tDIV; //@rés @opé @opé
+^05 return tCOP; //@rés @opé
+^06 return tAFC; //@res val_cons
+^07 return tJMP; //n° instruction
+^08 return tJMF; //@X n° instruction
+^09 return tINF; //@rés @opé @opé
+^A return tSUP;  //@rés @opé @opé
+^B return tEQU;  //@rés @opé @opé
+^C return tPRI;  //@rés
 
-[0-9]+  {yylval = atoi(yytext); return NB;} //(voir yacc précédent)
+[0-9]+  {yylval = atoi(yytext); return tNB;} //(voir yacc précédent)

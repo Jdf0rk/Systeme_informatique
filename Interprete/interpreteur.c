@@ -1,4 +1,4 @@
-#include "./interpreteur.h"
+#include "interpreteur.h"
 
 //Notre jolie tableau de données
 int memoire[TAILLE_TABLEAU];

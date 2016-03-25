@@ -1,0 +1,401 @@
+Grammar
+
+    0 $accept: S $end
+
+    1 S: ope S
+    2  | ope
+
+    3 ope: tADD tNB tNB tNB
+    4    | tMUL tNB tNB tNB
+    5    | tSOU tNB tNB tNB
+    6    | tDIV tNB tNB tNB
+    7    | tCOP tNB tNB
+    8    | tAFC tNB tNB
+    9    | tJMP tNB
+   10    | tJMF tNB tNB
+   11    | tINF tNB tNB tNB
+   12    | tSUP tNB tNB tNB
+   13    | tEQU tNB tNB tNB
+   14    | tPRI tNB
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+tADD (258) 3
+tMUL (259) 4
+tSOU (260) 5
+tDIV (261) 6
+tCOP (262) 7
+tAFC (263) 8
+tJMP (264) 9
+tJMF (265) 10
+tINF (266) 11
+tSUP (267) 12
+tEQU (268) 13
+tPRI (269) 14
+tNB (270) 3 4 5 6 7 8 9 10 11 12 13 14
+
+
+Nonterminals, with rules where they appear
+
+$accept (16)
+    on left: 0
+S (17)
+    on left: 1 2, on right: 0 1
+ope (18)
+    on left: 3 4 5 6 7 8 9 10 11 12 13 14, on right: 1 2
+
+
+state 0
+
+    0 $accept: . S $end
+
+    tADD  shift, and go to state 1
+    tMUL  shift, and go to state 2
+    tSOU  shift, and go to state 3
+    tDIV  shift, and go to state 4
+    tCOP  shift, and go to state 5
+    tAFC  shift, and go to state 6
+    tJMP  shift, and go to state 7
+    tJMF  shift, and go to state 8
+    tINF  shift, and go to state 9
+    tSUP  shift, and go to state 10
+    tEQU  shift, and go to state 11
+    tPRI  shift, and go to state 12
+
+    S    go to state 13
+    ope  go to state 14
+
+
+state 1
+
+    3 ope: tADD . tNB tNB tNB
+
+    tNB  shift, and go to state 15
+
+
+state 2
+
+    4 ope: tMUL . tNB tNB tNB
+
+    tNB  shift, and go to state 16
+
+
+state 3
+
+    5 ope: tSOU . tNB tNB tNB
+
+    tNB  shift, and go to state 17
+
+
+state 4
+
+    6 ope: tDIV . tNB tNB tNB
+
+    tNB  shift, and go to state 18
+
+
+state 5
+
+    7 ope: tCOP . tNB tNB
+
+    tNB  shift, and go to state 19
+
+
+state 6
+
+    8 ope: tAFC . tNB tNB
+
+    tNB  shift, and go to state 20
+
+
+state 7
+
+    9 ope: tJMP . tNB
+
+    tNB  shift, and go to state 21
+
+
+state 8
+
+   10 ope: tJMF . tNB tNB
+
+    tNB  shift, and go to state 22
+
+
+state 9
+
+   11 ope: tINF . tNB tNB tNB
+
+    tNB  shift, and go to state 23
+
+
+state 10
+
+   12 ope: tSUP . tNB tNB tNB
+
+    tNB  shift, and go to state 24
+
+
+state 11
+
+   13 ope: tEQU . tNB tNB tNB
+
+    tNB  shift, and go to state 25
+
+
+state 12
+
+   14 ope: tPRI . tNB
+
+    tNB  shift, and go to state 26
+
+
+state 13
+
+    0 $accept: S . $end
+
+    $end  shift, and go to state 27
+
+
+state 14
+
+    1 S: ope . S
+    2  | ope .
+
+    tADD  shift, and go to state 1
+    tMUL  shift, and go to state 2
+    tSOU  shift, and go to state 3
+    tDIV  shift, and go to state 4
+    tCOP  shift, and go to state 5
+    tAFC  shift, and go to state 6
+    tJMP  shift, and go to state 7
+    tJMF  shift, and go to state 8
+    tINF  shift, and go to state 9
+    tSUP  shift, and go to state 10
+    tEQU  shift, and go to state 11
+    tPRI  shift, and go to state 12
+
+    $default  reduce using rule 2 (S)
+
+    S    go to state 28
+    ope  go to state 14
+
+
+state 15
+
+    3 ope: tADD tNB . tNB tNB
+
+    tNB  shift, and go to state 29
+
+
+state 16
+
+    4 ope: tMUL tNB . tNB tNB
+
+    tNB  shift, and go to state 30
+
+
+state 17
+
+    5 ope: tSOU tNB . tNB tNB
+
+    tNB  shift, and go to state 31
+
+
+state 18
+
+    6 ope: tDIV tNB . tNB tNB
+
+    tNB  shift, and go to state 32
+
+
+state 19
+
+    7 ope: tCOP tNB . tNB
+
+    tNB  shift, and go to state 33
+
+
+state 20
+
+    8 ope: tAFC tNB . tNB
+
+    tNB  shift, and go to state 34
+
+
+state 21
+
+    9 ope: tJMP tNB .
+
+    $default  reduce using rule 9 (ope)
+
+
+state 22
+
+   10 ope: tJMF tNB . tNB
+
+    tNB  shift, and go to state 35
+
+
+state 23
+
+   11 ope: tINF tNB . tNB tNB
+
+    tNB  shift, and go to state 36
+
+
+state 24
+
+   12 ope: tSUP tNB . tNB tNB
+
+    tNB  shift, and go to state 37
+
+
+state 25
+
+   13 ope: tEQU tNB . tNB tNB
+
+    tNB  shift, and go to state 38
+
+
+state 26
+
+   14 ope: tPRI tNB .
+
+    $default  reduce using rule 14 (ope)
+
+
+state 27
+
+    0 $accept: S $end .
+
+    $default  accept
+
+
+state 28
+
+    1 S: ope S .
+
+    $default  reduce using rule 1 (S)
+
+
+state 29
+
+    3 ope: tADD tNB tNB . tNB
+
+    tNB  shift, and go to state 39
+
+
+state 30
+
+    4 ope: tMUL tNB tNB . tNB
+
+    tNB  shift, and go to state 40
+
+
+state 31
+
+    5 ope: tSOU tNB tNB . tNB
+
+    tNB  shift, and go to state 41
+
+
+state 32
+
+    6 ope: tDIV tNB tNB . tNB
+
+    tNB  shift, and go to state 42
+
+
+state 33
+
+    7 ope: tCOP tNB tNB .
+
+    $default  reduce using rule 7 (ope)
+
+
+state 34
+
+    8 ope: tAFC tNB tNB .
+
+    $default  reduce using rule 8 (ope)
+
+
+state 35
+
+   10 ope: tJMF tNB tNB .
+
+    $default  reduce using rule 10 (ope)
+
+
+state 36
+
+   11 ope: tINF tNB tNB . tNB
+
+    tNB  shift, and go to state 43
+
+
+state 37
+
+   12 ope: tSUP tNB tNB . tNB
+
+    tNB  shift, and go to state 44
+
+
+state 38
+
+   13 ope: tEQU tNB tNB . tNB
+
+    tNB  shift, and go to state 45
+
+
+state 39
+
+    3 ope: tADD tNB tNB tNB .
+
+    $default  reduce using rule 3 (ope)
+
+
+state 40
+
+    4 ope: tMUL tNB tNB tNB .
+
+    $default  reduce using rule 4 (ope)
+
+
+state 41
+
+    5 ope: tSOU tNB tNB tNB .
+
+    $default  reduce using rule 5 (ope)
+
+
+state 42
+
+    6 ope: tDIV tNB tNB tNB .
+
+    $default  reduce using rule 6 (ope)
+
+
+state 43
+
+   11 ope: tINF tNB tNB tNB .
+
+    $default  reduce using rule 11 (ope)
+
+
+state 44
+
+   12 ope: tSUP tNB tNB tNB .
+
+    $default  reduce using rule 12 (ope)
+
+
+state 45
+
+   13 ope: tEQU tNB tNB tNB .
+
+    $default  reduce using rule 13 (ope)
