@@ -7,7 +7,7 @@ struct label tableL[TAILLEL];
 int newLabel() {
 	
 	char nom[10];
-	sprintf(nom,"LABEL%d",compteurNewL);
+	sprintf(nom,"L%d",compteurNewL);
 	struct label lab = {nom,-1};
 	tableL[compteurNewL]=lab;
 	compteurSetL=compteurNewL;

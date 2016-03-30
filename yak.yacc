@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "symtable.h"
 #include "labeltable.h"
 
@@ -8,6 +9,7 @@ int pc=0;
 int addrCond=-1;
 char chaine[50];
 FILE* fichier=NULL;
+FILE* fichier2=NULL;
 %}
 //viré le espace et sautligne et tab
 //viré le main
@@ -260,11 +262,41 @@ int yyerror(char *s) {
 
 int main(void) {
  
-	fichier = fopen("./assembleur", "w+");
+ 	char car;
+ 	char tcar[3];
+ 	int label;
+ 	int i=0;
+	fichier = fopen("./temp", "w+");
 	yyparse();
 	//on remplace les labels par leur valeur dans la table
-	
-  
+	fclose(fichier);
+	fichier = fopen("./temp", "r");
+	fichier2 = fopen("./assembleur", "w+");
+	car = fgetc(fichier); // On lit le caractère
+	while (car != EOF) {
+		if (car != 'L') {
+			fputc(car,fichier2);
+		}else{
+			label = 0;
+			car = fgetc(fichier);
+			//fseek(fichier, 1, SEEK_CUR);
+			while (car != '\n' && car != EOF){
+				//tcar[i]=fgetc(fichier);
+				//i++;
+				label = label * 10 + car - '0';
+				car = fgetc(fichier);
+			}
+			printf("LABEL: %d %d\n", label, getLabel(label));
+			fprintf(fichier2, "%d\n", getLabel(label));
+			if (car == EOF) {
+				break;
+			}
+		}
+		car = fgetc(fichier); // On lit le caractère
+        }
+        
+        fclose(fichier);
+  	fclose(fichier2);
 }
 			
 

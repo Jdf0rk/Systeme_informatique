@@ -10,16 +10,3 @@ int main(int a,int b)
 	}
 }
 
-AFC @1000 5
-COP @0 @1000
-AFC @1000 15
-COP @1 @1000
-AFC @1000 5
-variable déjà déclarée
-AFC @1000 2
-COP @0 @1000
-AFC @1000 5
-COP @2 @1000
-AFC @1000 21
-COP @3 @1000
-
